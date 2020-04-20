@@ -3,8 +3,10 @@ import config
 from PIL import Image
 import os
 import shutil
-bot = telebot.TeleBot(config.TOKEN)
+import comtypes.client
 
+bot = telebot.TeleBot(config.TOKEN)
+savepdfconst = 17
 
 i_s = {}
 
@@ -73,7 +75,27 @@ def handle_rename(message):
         bot.reply_to(message, "sorry, error occured, try again")
         if os.path.exists(f"user_{identity}"):
             shutil.rmtree(f"user_{identity}")
-            
+
+
+@bot.message_handler(content_types=['document'])
+def handle_word_to_pdf(message):
+    word = comtypes.client.CreateObject('Word.Application')
+    word.Visible = False
+    doc_info = bot.get_file(message.document.file_id)
+    doc_file = bot.download_file(doc_info.file_id)
+    with open(f"temp_{message.from_user.id}.doc", "wb") as writable:
+        writable.write(doc_file)
+    
+    doc = word.Documents.open('temp_{message.from_user.id}.doc')
+    doc.SaveAs(f"temp_{message.from_user.id}.pdf", FileFormat=savepdfconst)
+    doc.Close()
+    word.Quit()
+
+    with open(f"temp_{message.from_user.id}.pdf", "rb") as f:
+        bot.send_document(message.chat.id, f)
+    os.remove(f"temp_{message.from_user.id}.pdf")
+    os.remove(f"temp_{message.from_user.id}.doc")
+
 
 print("start polling")
 while True:
