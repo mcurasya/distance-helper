@@ -50,10 +50,10 @@ def handle_start(message):
 
 def handle_rename(message):
     try:
-        bot.send_message(config.CREATOR_ID, 'current counters')
-        bot.send_message(config.CREATOR_ID, i_s)
         print("sending pdf")
         global i_s
+        bot.send_message(config.CREATOR_ID, 'current counters')
+        bot.send_message(config.CREATOR_ID, i_s)
         identity = message.from_user.id
         length = i_s[identity]
         del i_s[identity]
