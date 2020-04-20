@@ -39,7 +39,6 @@ def handle_stop(message):
         bot.reply_to(message, "sorry, you didnt provide any files")
         return
     im0 = Image.open(f"user_{identity}/image_{identity}_0.jpg")
-    
     for i in range(1, length):
         image = Image.open(f"user_{identity}/image_{identity}_{i}.jpg")
         im = image.convert("RGB")
