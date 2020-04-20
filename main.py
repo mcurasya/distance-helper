@@ -40,6 +40,8 @@ def handle_stop(message):
         image = Image.open(f"user_{identity}/image_{identity}_{i}.jpg")
         im = image.convert("RGB")
         images.append(im)
+    if not os.path.exists('results'):
+        os.mkdir('results')
     im0.save(f"results/file_{identity}.pdf", save_all=True, append_images=images)
     doc = open(f"results/file_{identity}.pdf", "rb")
     bot.send_document(message.chat.id, doc)
