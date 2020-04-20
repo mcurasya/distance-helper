@@ -59,6 +59,8 @@ def handle_start(message):
     global i_s
     identity = message.from_user.id
     i_s[identity] = 0
+    if os.path.exists(f"user_{identity}"):
+        shutil.rmtree(f"user_{identity}")
     bot.send_message(message.chat.id, "hello, send me images then write /stop to get a pdf")
 
 
