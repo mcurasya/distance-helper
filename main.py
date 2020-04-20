@@ -39,7 +39,6 @@ def handle_stop(message):
         bot.reply_to(message, "sorry, you didnt provide any files")
         return
     im0 = Image.open(f"user_{identity}/image_{identity}_0.jpg")
-    
     for i in range(1, length):
         image = Image.open(f"user_{identity}/image_{identity}_{i}.jpg")
         im = image.convert("RGB")
@@ -59,8 +58,9 @@ def handle_start(message):
     print("new user")
     global i_s
     identity = message.from_user.id
-    if identity in i_s:
-        del i_s[identity]
+    i_s[identity] = 0
+    if os.path.exists(f"user_{identity}"):
+        shutil.rmtree(f"user_{identity}")
     bot.send_message(message.chat.id, "hello, send me images then write /stop to get a pdf")
 
 
