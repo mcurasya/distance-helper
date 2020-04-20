@@ -7,9 +7,7 @@ bot = telebot.TeleBot(config.TOKEN)
 
 
 i_s = {}
-@bot.message_handler(content_types=["text"])
-def handle_name(message):
-    pass
+
 
 @bot.message_handler(content_types=["photo"])
 def getpics(message):
@@ -70,7 +68,9 @@ def handle_start(message):
     bot.send_message(message.chat.id, "hello, send me images then write /stop to get a pdf")
 
 
-
+@bot.message_handler(content_types=["text"])
+def handle_name(message):
+    pass
 
 print("start polling")
 while True:
