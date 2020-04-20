@@ -60,4 +60,5 @@ def handle_start(message):
 
 
 print("start polling")
-bot.polling(none_stop=True)
+while True:
+    bot.polling(none_stop=True)
