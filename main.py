@@ -32,6 +32,9 @@ def getpics(message):
 
 @bot.message_handler(commands=["stop"])
 def handle_stop(message):
+    if length == 0:
+            bot.reply_to(message, "sorry, you didnt provide any files")
+            return
     bot.reply_to(message, "please enter the name of your document(without .pdf)")
     bot.register_next_step_handler(message, handle_rename)
 
