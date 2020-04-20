@@ -58,8 +58,7 @@ def handle_start(message):
     print("new user")
     global i_s
     identity = message.from_user.id
-    if identity in i_s:
-        del i_s[identity]
+    i_s[identity] = 0
     bot.send_message(message.chat.id, "hello, send me images then write /stop to get a pdf")
 
 
