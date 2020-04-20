@@ -28,7 +28,7 @@ def getpics(message):
     with open(f"user_{identity}/image_{identity}_{i_s[identity]}.jpg", 'wb') as new_file:
         new_file.write(downloaded_file)
         i_s[identity]+=1
-
+        
 @bot.message_handler(commands=["stop"])
 def handle_stop(message):
     if i_s[message.from_user.id] == 0:
@@ -50,6 +50,8 @@ def handle_start(message):
 
 def handle_rename(message):
     try:
+        bot.send_message(config.CREATOR_ID, 'current counters')
+        bot.send_message(config.CREATOR_ID, i_s)
         print("sending pdf")
         global i_s
         identity = message.from_user.id
