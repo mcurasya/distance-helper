@@ -71,7 +71,7 @@ def handle_rename(message):
         shutil.rmtree(f"user_{identity}")
         os.remove(f"results/{message.text}.pdf")
     except Exception as e:
-        print("error occured: ", e.message)
+        print("error occured: ", e)
         bot.reply_to(message, "sorry, error occured, try again")
         if os.path.exists(f"user_{identity}"):
             shutil.rmtree(f"user_{identity}")
