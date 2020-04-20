@@ -14,11 +14,11 @@ i_s = {}
 def getpics(message):
     global i_s
     identity = message.from_user.id
-    if identity not in i_s:
+    if identity not in i_s.keys():
         print(f"new user: {message.from_user.username}!")
         i_s[identity] = 0
     print(f"getting photo {i_s[identity]} from user {message.from_user.username} with id {identity}")
-    fileID = message.photo[-1].file_id
+    fileID = message.photo.file_id
     print ('fileID =', fileID)
     file_info = bot.get_file(fileID)
     print ('file.file_path =', file_info.file_path)
