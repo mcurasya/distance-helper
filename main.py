@@ -74,12 +74,14 @@ def handle_rename(message):
         doc.close()
         shutil.rmtree(f"user_{identity}")
         os.remove(f"results/{message.text}.pdf")
+        print(f"success for {message.from_user.username}")
+        bot.send_message(config.CREATOR_ID, f"success for {message.from_user.username}")
     except Exception as e:
         print("error occured: ", e)
         bot.reply_to(message, "sorry, error occured, try again")
         if os.path.exists(f"user_{identity}"):
             shutil.rmtree(f"user_{identity}")
-
+        bot.send_message(config.CREATOR_ID, f"error for {message.from_user.username}")
 
 
 print("start polling")
