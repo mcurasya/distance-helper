@@ -7,9 +7,7 @@ bot = telebot.TeleBot(config.TOKEN)
 
 
 i_s = {}
-@bot.message_handler(content_types=["text"])
-def handle_name(message):
-    pass
+
 
 @bot.message_handler(content_types=["photo"])
 def getpics(message):
@@ -32,6 +30,21 @@ def getpics(message):
 
 @bot.message_handler(commands=["stop"])
 def handle_stop(message):
+    bot.reply_to(message, "please enter the name of your document(without .pdf)")
+    bot.register_next_step_handler(message, handle_rename)
+
+@bot.message_handler(commands=["start"])
+def handle_start(message):
+    print("new user")
+    global i_s
+    identity = message.from_user.id
+    i_s[identity] = 0
+    if os.path.exists(f"user_{identity}"):
+        shutil.rmtree(f"user_{identity}")
+    bot.send_message(message.chat.id, "hello, send me images then write /stop to get a pdf")
+
+
+def handle_rename(message):
     try:
         print("sending pdf")
         global i_s
@@ -49,28 +62,18 @@ def handle_stop(message):
             images.append(im)
         if not os.path.exists('results'):
             os.mkdir('results')
-        im0.save(f"results/file_{identity}.pdf", save_all=True, append_images=images)
-        doc = open(f"results/file_{identity}.pdf", "rb")
+        im0.save(f"results/{message.text}.pdf", save_all=True, append_images=images)
+        doc = open(f"results/{message.text}.pdf", "rb")
         bot.send_document(message.chat.id, doc)
         doc.close()
         shutil.rmtree(f"user_{identity}")
-        os.remove(f"results/file_{identity}.pdf")
+        os.remove(f"results/{message.text}.pdf")
     except Exception as e:
         print("error occured: ", e.message)
-        bot.reply_to(message, "sorry, error occured")
-
-@bot.message_handler(commands=["start"])
-def handle_start(message):
-    print("new user")
-    global i_s
-    identity = message.from_user.id
-    i_s[identity] = 0
-    if os.path.exists(f"user_{identity}"):
-        shutil.rmtree(f"user_{identity}")
-    bot.send_message(message.chat.id, "hello, send me images then write /stop to get a pdf")
-
-
-
+        bot.reply_to(message, "sorry, error occured, try again")
+        if os.path.exists(f"user_{identity}"):
+            shutil.rmtree(f"user_{identity}")
+            
 
 print("start polling")
 while True:
