@@ -19,7 +19,7 @@ def getpics(message):
         i_s[identity] = 0
     print(f"getting photo {i_s[identity]} from user {message.from_user.username} with id {identity}")
     fileID = message.photo[-1].file_id
-    print(len(message.photo))
+    print(message.photo)
     print ('fileID =', fileID)
     file_info = bot.get_file(fileID)
     print ('file.file_path =', file_info.file_path)
