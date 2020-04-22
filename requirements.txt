@@ -2,4 +2,4 @@ Pillow==7.1.1
 pyTelegramBotAPI==3.6.7
 requests==2.23.0
 six==1.14.0
-convertapi==1.1.1
+
