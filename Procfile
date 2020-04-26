@@ -1,1 +1,1 @@
-worker: python main.py
+worker: docker build -t distance-helper . & docker run distance-helper
