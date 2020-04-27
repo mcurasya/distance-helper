@@ -3,7 +3,6 @@ import config
 from PIL import Image
 import os
 import shutil
-import convertapi
 bot = telebot.TeleBot(config.TOKEN)
 savepdfconst = 17
 
