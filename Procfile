@@ -1,1 +1,1 @@
-worker: docker build -t distance-helper . & docker run distance-helper
+worker: docker build -t distance-helper . && docker run distance-helper
