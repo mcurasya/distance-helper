@@ -95,15 +95,19 @@ def doc_to_pdf(message):
 
 
 def handle_rename_doc_to_pdf(message):
-    identity = message.from_user.id
-    name = message.text 
-    os.rename(f'docum_{identity}.pdf', f"{name}.pdf")
-    doc = open(f"{name}.pdf", "rb")
-    bot.send_document(message.chat.id, doc)
-    doc.close()
-    os.remove(f"docum_{identity}.docx")
-    os.remove(f"{name}.pdf")
-    print(f"start doc to pdf for {message.from_user.username}")
+    try:
+        identity = message.from_user.id
+        name = message.text 
+        os.rename(f'docum_{identity}.pdf', )
+        doc = open(f"{name}.pdf", "rb")
+        bot.send_document(message.chat.id, doc)
+        doc.close()
+        os.remove(f"docum_{identity}.docx")
+        os.remove(f"{name}.pdf")
+        print(f"start doc to pdf for {message.from_user.username}")
+    except Exception as e:
+        print(e)
+        bot.reply_to(message, "sorry, error occured, try again")
 
 print("start polling")
 while True:
