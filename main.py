@@ -3,6 +3,7 @@ import config
 from PIL import Image
 import os
 import shutil
+import subprocess
 bot = telebot.TeleBot(config.TOKEN)
 savepdfconst = 17
 
@@ -82,6 +83,23 @@ def handle_rename(message):
             shutil.rmtree(f"user_{identity}")
         bot.send_message(config.CREATOR_ID, f"error for {message.from_user.username}")
 
+@bot.message_handler(content_types=["document"])
+def doc_to_pdf(message):
+    print(f"start doc to pdf for {message.from_user.username}")
+    identity = message.from_user.id
+    fileId = message.document.file_id
+    fileInfo = bot.get_file(fileId)
+    downloaded_file = bot.download_file(fileInfo.file_path)
+    with open(f"docum_{identity}.docx", "wb") as out_file: 
+        out_file.write(downloaded_file)
+    output = subprocess.check_output(['libreoffice', '--convert-to', 'pdf' ,f'docum_{identity}.docx'])
+    print(output)
+    doc = open(f"docum_{identity}.pdf", "rb")
+    bot.send_document(message.chat.id, doc)
+    doc.close()
+    os.remove(f"docum_{identity}.docx")
+    os.remove(f"docum_{identity}.pdf")
+    print(f"success doc to pdf for {message.from_user.username}")
 
 print("start polling")
 while True:
