@@ -86,21 +86,26 @@ def handle_rename(message):
 @bot.message_handler(content_types=["document"])
 def doc_to_pdf(message):
     print(f"start doc to pdf for {message.from_user.username}")
+    bot.reply_to(message, "please enter the name of your document(without .pdf)")
+    bot.register_next_step_handler(message, rename_doc_to_pdf)
+
+
+def rename_doc_to_pdf(message):
+    new_name = message.text
     identity = message.from_user.id
     fileId = message.document.file_id
     fileInfo = bot.get_file(fileId)
     downloaded_file = bot.download_file(fileInfo.file_path)
-    with open(f"docum_{identity}.docx", "wb") as out_file: 
+    with open(f"{new_name}.docx", "wb") as out_file: 
         out_file.write(downloaded_file)
-    output = subprocess.check_output(['libreoffice', '--convert-to', 'pdf' ,f'docum_{identity}.docx'])
+    output = subprocess.check_output(['libreoffice', '--convert-to', 'pdf' ,f'{new_name}.docx'])
     print(output)
-    doc = open(f"docum_{identity}.pdf", "rb")
+    doc = open(f"{new_name}.pdf", "rb")
     bot.send_document(message.chat.id, doc)
     doc.close()
-    os.remove(f"docum_{identity}.docx")
-    os.remove(f"docum_{identity}.pdf")
+    os.remove(f"{new_name}.docx")
+    os.remove(f"{new_name}.pdf")
     print(f"success doc to pdf for {message.from_user.username}")
-
 print("start polling")
 while True:
     bot.polling(none_stop=True)
