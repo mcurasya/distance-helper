@@ -9,6 +9,22 @@ savepdfconst = 17
 
 i_s = {}
 
+@bot.message_handler(commands=["delete"])
+def delete_photo(message):
+    global i_s
+    identity = message.from_user.id
+    if identity not in i_s.keys() or i_s[identity] == 0:
+        bot.reply_to(message, "sorry, nothing to delete")
+        return
+    try:
+        if os.path.exists(f"user_{identity}"):
+            os.remove(f"user_{identity}/image_{identity}_{i_s[identity]}.jpg")
+            i_s[identity]-=1
+    except Exception as e:
+        print("error")
+        bot.reply_to(message, "sorry, something went wrong, start again from the beginning")
+        if os.path.exists(f"user_{identity}"):
+            shutil.rmtree(f"user_{identity}")
 
 @bot.message_handler(content_types=["photo"])
 def getpics(message):
