@@ -18,8 +18,8 @@ def delete_photo(message):
         return
     try:
         if os.path.exists(f"user_{identity}"):
-            os.remove(f"user_{identity}/image_{identity}_{i_s[identity]}.jpg")
             i_s[identity]-=1
+            os.remove(f"user_{identity}/image_{identity}_{i_s[identity]}.jpg")
     except Exception as e:
         print("error")
         bot.reply_to(message, "sorry, something went wrong, start again from the beginning")
